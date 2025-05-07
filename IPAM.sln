@@ -5,6 +5,8 @@ VisualStudioVersion = 17.13.35919.96 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPAM", "IPAM\IPAM.csproj", "{1CF36D30-6A16-4437-9329-0D14B7E6E51D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPAM-UnitTests", "IPAM-UnitTests\IPAM-UnitTests.csproj", "{F9EA7C3F-55C8-4161-B72B-5B3FC4BA7823}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{1CF36D30-6A16-4437-9329-0D14B7E6E51D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CF36D30-6A16-4437-9329-0D14B7E6E51D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CF36D30-6A16-4437-9329-0D14B7E6E51D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9EA7C3F-55C8-4161-B72B-5B3FC4BA7823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9EA7C3F-55C8-4161-B72B-5B3FC4BA7823}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9EA7C3F-55C8-4161-B72B-5B3FC4BA7823}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9EA7C3F-55C8-4161-B72B-5B3FC4BA7823}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
