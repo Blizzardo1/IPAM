@@ -1,5 +1,7 @@
 # IPAM
 
+[![.NET Core Desktop](https://github.com/Blizzardo1/IPAM/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/Blizzardo1/IPAM/actions/workflows/dotnet-desktop.yml)
+
 This project took a span of 2 days to write and sort of perfect. Although not entirely perfect, it can use some additional tweaks such as removing the IP UserControl altogether and replace it with a custom object that can be added to a panel for easier management. This is a concept and should not really utilize larger networks.
 
 The only reason why I even created this project was I needed a system to visualize the partition of my home network as I didn't want to use Excel or Google Sheets to make changes. This way I have a way to vizualize it without needing to find products that take forever to deploy or use overcomplicated systems like NetBox or old software like PHP-IPAM.
