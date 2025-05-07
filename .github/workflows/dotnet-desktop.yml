@@ -57,9 +57,9 @@ jobs:
 
     env:
       Solution_Name: IPAM.sln
-      Test_Project_Path: IPAM/IPAM-UnitTests/IPAM-UnitTests.csproj
-      Wap_Project_Directory: IPAM/WAP
-      Wap_Project_Path: IPAM/WAP/WAP.wapproj
+      Test_Project_Path: IPAM-UnitTests/IPAM-UnitTests.csproj
+      Wap_Project_Directory: WAP
+      Wap_Project_Path: WAP/WAP.wapproj
 
     steps:
     - name: Checkout
