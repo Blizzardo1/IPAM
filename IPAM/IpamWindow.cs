@@ -105,6 +105,56 @@ public partial class IpamWindow : Form {
         }
     }
 
+    private void ParseCsvData(string file) {
+        string[] lines = File.ReadAllLines(file);
+        Network? network = Helper.ParseData(lines);
+
+        if (network is null || network.IPAddresses is null) {
+            return;
+        }
+        if (_config is null || _config.Networks is null) {
+            MessageBox.Show("You must create a new Network first and ensure that an ID is present as the header of the CSV.", null, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+            return;
+        }
+
+        // Update the network by ID
+        Network current = _config.Networks.First(net => net.Id == network.Id);
+        if (current is null || current.IPAddresses is null) {
+            MessageBox.Show($"No network was found for ID {network.Id}", null, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+            return;
+        }
+
+        List<IpItemDto> items = [.. network.IPAddresses];
+        List<IpItemDto> currentNetItems = [.. current.IPAddresses];
+        foreach (IpItemDto ip in items) {
+            // This index ensures that the current Network and the network Network have that IPAddress
+            int index = currentNetItems.FindIndex((iip) => {
+                return iip.IPAddress.Equals(ip.IPAddress);
+            });
+
+            if (index < 0) {
+                MessageBox.Show($"IP Address {ip.IPAddress} not found in list", null, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                return;
+            }
+
+            // Set the current DTO by Index
+            var dto = current.IPAddresses[index];
+            dto.IPAddress = ip.IPAddress;
+            dto.DeviceName = ip.DeviceName;
+            dto.EnrollmentStatus = ip.EnrollmentStatus;
+            currentNetItems[index] = dto;
+        }
+        if (!_config.Networks.Remove(current)) {
+            MessageBox.Show($"Error removing Network {current.NetworkName}", null, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+            return;
+        }
+
+        Network newNetwork = new(current.NetworkName, current.Subnet) { Id = current.Id, IPAddresses = [.. currentNetItems] };
+        _config.Networks.Add(newNetwork);
+        _config.Save();
+        GetNetwork(newNetwork);
+    }
+
     private async void CreateNetworkBtn_Click(object sender, EventArgs e) {
         if (NetworkNameTxt.Text.IsEmpty()) {
             MessageBox.Show("Please specify a network name", null, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
@@ -170,54 +220,7 @@ public partial class IpamWindow : Form {
         };
 
         if(dlg.ShowDialog() is DialogResult.OK) {
-            string[] lines = File.ReadAllLines(dlg.FileName);
-            Network? network = Helper.ParseData(lines);
-            
-            if (network is null || network.IPAddresses is null) {
-                return;
-            }
-            if(_config is null || _config.Networks is null) {
-                MessageBox.Show("You must create a new Network first and ensure that an ID is present as the header of the CSV.", null, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                return;
-            }
-
-            // Update the network by ID
-            Network current = _config.Networks.First(net => net.Id == network.Id);
-            if (current is null || current.IPAddresses is null) {
-                MessageBox.Show($"No network was found for ID {network.Id}", null, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                return;
-            }
-
-            List<IpItemDto> items = [.. network.IPAddresses];
-            List<IpItemDto> currentNetItems = [.. current.IPAddresses];
-            foreach (IpItemDto ip in items) {
-                // This index ensures that the current Network and the network Network have that IPAddress
-                int index = currentNetItems.FindIndex((iip) => {
-                    return iip.IPAddress.Equals(ip.IPAddress);
-                });
-
-                if (index < 0) {
-                    MessageBox.Show($"IP Address {ip.IPAddress} not found in list", null, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                    return;
-                }
-
-                // Set the current DTO by Index
-                var dto = current.IPAddresses[index];
-                dto.IPAddress = ip.IPAddress;
-                dto.DeviceName = ip.DeviceName;
-                dto.EnrollmentStatus = ip.EnrollmentStatus;
-                currentNetItems[index] = dto;
-            }
-            if(!_config.Networks.Remove(current)) {
-                MessageBox.Show($"Error removing Network {current.NetworkName}", null, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                return;
-            }
-
-            Network newNetwork = new(current.NetworkName, current.Subnet) { Id = current.Id, IPAddresses = [.. currentNetItems] };
-            _config.Networks.Add(newNetwork);
-            _config.Save();
-            GetNetwork(newNetwork);
-
+            ParseCsvData(dlg.FileName);
         }
     }
 

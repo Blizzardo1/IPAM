@@ -58,7 +58,6 @@
             Name = "SplashScreen";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "SplashScreen";
-            Load += SplashScreen_Load;
             ResumeLayout(false);
         }
 

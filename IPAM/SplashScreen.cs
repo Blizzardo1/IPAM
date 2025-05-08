@@ -33,9 +33,5 @@ namespace IPAM {
             StatusLbl.Text = text;
             Invalidate();
         }
-
-        private void SplashScreen_Load(object sender, EventArgs e) {
-
-        }
     }
 }
