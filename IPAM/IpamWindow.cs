@@ -176,6 +176,7 @@ public partial class IpamWindow : Form {
             GetNetwork(network);
         } catch(TaskCanceledException tce) {
             // Task Cancelled
+            MessageBox.Show($"Task Canceled: {tce.Message}", "Task Cancellation Failure", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
         }
     }
 
